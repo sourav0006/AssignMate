@@ -33,9 +33,9 @@ export default function Home() {
           <span className="text-xl font-bold font-headline text-foreground">AssignSimple</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link href="/login" className="text-sm font-medium hover:underline underline-offset-4">
-            Login
-          </Link>
+          <Button variant="secondary" asChild>
+            <Link href="/login">Login</Link>
+          </Button>
           <Button asChild>
             <Link href="/login">Get Started</Link>
           </Button>
