@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'AssignSimple',
+  title: 'AssignMate',
   description: 'Get your assignments done or earn by completing them.',
 };
 

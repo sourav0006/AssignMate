@@ -49,7 +49,7 @@ export function Header({ mode, setMode }: HeaderProps) {
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <Logo />
-          <span className="font-bold">AssignSimple</span>
+          <span className="font-bold">AssignMate</span>
         </Link>
         <Link
           href="/dashboard"

@@ -31,7 +31,7 @@ export default function LoginPage() {
         <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
                 <Logo />
-                <span className="text-2xl font-bold font-headline">AssignSimple</span>
+                <span className="text-2xl font-bold font-headline">AssignMate</span>
             </Link>
         </div>
         <TabsList className="grid w-full grid-cols-2">
