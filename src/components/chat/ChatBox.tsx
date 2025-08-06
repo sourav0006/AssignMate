@@ -22,7 +22,7 @@ const mockOtherUser: User = {
   id: "user-2",
   name: "Jane Smith",
   email: "jane@example.com",
-  avatarUrl: "https://placehold.co/100x100.png?text=JS",
+  avatarUrl: "https://placehold.co/100x100.png",
   rating: 4.9,
   reviewsCount: 45,
 };

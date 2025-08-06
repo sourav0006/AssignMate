@@ -23,7 +23,7 @@ const mockAssignment: Assignment = {
   amount: 1500,
   deadline: new Date("2024-08-15"),
   status: "In Progress",
-  requester: { ...mockUser, name: "Jane Smith", avatarUrl: "https://placehold.co/100x100.png?text=JS" },
+  requester: { ...mockUser, name: "Jane Smith", avatarUrl: "https://placehold.co/100x100.png" },
   provider: mockUser,
   location: "Mumbai, Maharashtra",
   fileUrls: ["report_guidelines.pdf", "dataset.csv"]
