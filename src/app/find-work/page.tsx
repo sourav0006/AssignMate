@@ -1,18 +1,19 @@
+"use client";
+
 import { AssignmentCard } from "@/components/assignment/AssignmentCard";
 import { Header } from "@/components/layout/Header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { mockAssignments } from "@/lib/mock-data";
+import { useState } from "react";
 
 
 export default function FindWorkPage() {
   const openAssignments = mockAssignments.filter(a => a.status === 'Open');
-
-  // A dummy state for the header, since it's not interactive on this page
-  const setMode = () => {};
+  const [mode, setMode] = useState<'requester' | 'provider'>('provider');
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <Header mode="provider" setMode={setMode} />
+      <Header mode={mode} setMode={setMode} />
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <Card>
             <CardHeader>
