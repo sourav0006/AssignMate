@@ -48,7 +48,7 @@ export function Header({ mode, setMode }: HeaderProps) {
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <Logo />
-          <span className="sr-only">AssignSimple</span>
+          <span className="font-bold">AssignSimple</span>
         </Link>
         <Link
           href="/dashboard"
@@ -88,9 +88,11 @@ export function Header({ mode, setMode }: HeaderProps) {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <UserIcon className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+            <DropdownMenuItem asChild>
+                <Link href="/profile">
+                    <UserIcon className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
