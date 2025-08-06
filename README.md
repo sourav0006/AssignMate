@@ -75,4 +75,3 @@
 | **Chart.js** | Dashboard graphs and analytics |
 
 ---
----
