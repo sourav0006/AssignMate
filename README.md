@@ -75,16 +75,4 @@
 | **Chart.js** | Dashboard graphs and analytics |
 
 ---
-
-## 📦 Project Structure
-
-/src
-  /components       → Reusable UI components (Navbar, Cards, etc.)
-  /pages            → Home, Dashboard, Chat, Profile
-  /hooks            → Custom React hooks
-  /utils            → Firebase config, helpers, constants
-
-/firebase
-  index.js          → Firebase Cloud Functions (e.g. payments, admin tools)
-
 ---
