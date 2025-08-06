@@ -39,6 +39,10 @@ export function ThemeSwitcher() {
     setTheme(newTheme);
   };
 
+  if (theme === null) {
+    return null; // Don't render anything until the theme is determined client-side
+  }
+
   return (
     <Card>
       <CardContent className="p-4">
