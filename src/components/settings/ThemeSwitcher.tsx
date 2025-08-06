@@ -11,23 +11,33 @@ import { cn } from "@/lib/utils";
 type Theme = "light" | "dark";
 
 export function ThemeSwitcher() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") as Theme | null;
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    
     if (storedTheme) {
       setTheme(storedTheme);
+    } else {
+      setTheme(mediaQuery.matches ? "dark" : "light");
     }
   }, []);
 
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    if (theme) {
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      localStorage.setItem("theme", theme);
     }
-    localStorage.setItem("theme", theme);
   }, [theme]);
+  
+  const handleThemeChange = (newTheme: Theme) => {
+    setTheme(newTheme);
+  };
 
   return (
     <Card>
@@ -41,7 +51,7 @@ export function ThemeSwitcher() {
                 <Button 
                     variant={theme === 'light' ? 'default' : 'ghost'} 
                     size="sm"
-                    onClick={() => setTheme('light')}
+                    onClick={() => handleThemeChange('light')}
                     className={cn("gap-2", theme === 'light' && "bg-background text-foreground shadow-sm")}
                 >
                     <Sun className="h-4 w-4" />
@@ -50,7 +60,7 @@ export function ThemeSwitcher() {
                  <Button 
                     variant={theme === 'dark' ? 'default' : 'ghost'}
                     size="sm" 
-                    onClick={() => setTheme('dark')}
+                    onClick={() => handleThemeChange('dark')}
                     className={cn("gap-2", theme === 'dark' && "bg-background text-foreground shadow-sm")}
                 >
                     <Moon className="h-4 w-4" />
