@@ -22,6 +22,8 @@ export function AssignmentCard({ assignment, mode }: AssignmentCardProps) {
     }
   };
 
+  const isAssignedToProvider = mode === 'provider' && assignment.provider && assignment.status === 'In Progress';
+
   return (
     <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col">
       <CardHeader>
@@ -57,7 +59,7 @@ export function AssignmentCard({ assignment, mode }: AssignmentCardProps) {
       <CardFooter>
         <Button asChild className="w-full">
           <Link href={`/assignment/${assignment.id}`}>
-            {mode === 'provider' ? 'View & Apply' : 'View Details'}
+            {isAssignedToProvider ? 'View Task' : (mode === 'provider' ? 'View & Apply' : 'View Details')}
           </Link>
         </Button>
       </CardFooter>
