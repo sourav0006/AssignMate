@@ -8,60 +8,8 @@ import { StatsChart } from "@/components/dashboard/StatsChart";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { IndianRupee, CheckCircle, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { mockAssignments, mockUser } from "@/lib/mock-data";
 
-const mockUser: User = {
-  id: "user-1",
-  name: "Alex Doe",
-  email: "alex@example.com",
-  avatarUrl: "https://placehold.co/100x100.png",
-  rating: 4.8,
-  reviewsCount: 32,
-};
-
-const mockAssignments: Assignment[] = [
-  {
-    id: "1",
-    title: "Complete Physics Lab Report",
-    description: "Detailed lab report on the principles of thermodynamics. Must include graphs and data analysis. The report should be at least 10 pages long and follow the university's formatting guidelines.",
-    amount: 1500,
-    deadline: new Date("2024-08-15"),
-    status: "Open",
-    requester: { ...mockUser, name: "Jane Smith" },
-    location: "Mumbai, Maharashtra",
-  },
-  {
-    id: "2",
-    title: "Write an Essay on Ancient History",
-    description: "A 2000-word essay on the impact of the Roman Empire on modern law. Requires at least 5 academic sources.",
-    amount: 2500,
-    deadline: new Date("2024-08-20"),
-    status: "In Progress",
-    requester: { ...mockUser, name: "Robert Brown" },
-    provider: mockUser,
-    location: "Delhi, NCR",
-  },
-  {
-    id: "3",
-    title: "Create a Presentation on Marketing",
-    description: "A 20-slide presentation for a business class on digital marketing strategies for startups.",
-    amount: 1200,
-    deadline: new Date("2024-07-30"),
-    status: "Completed",
-    requester: mockUser,
-    provider: { ...mockUser, name: "Emily White" },
-    location: "Bengaluru, Karnataka",
-  },
-    {
-    id: "4",
-    title: "Solve Calculus Problem Set",
-    description: "Problem set covering differentiation and integration. 15 problems in total, need to show all steps for each solution.",
-    amount: 1800,
-    deadline: new Date("2024-09-01"),
-    status: "Open",
-    requester: { ...mockUser, name: "Michael Green" },
-    location: "Pune, Maharashtra",
-  },
-];
 
 const RequesterView = () => (
   <div className="space-y-6">
@@ -112,10 +60,10 @@ const RequesterView = () => (
                     </TabsList>
                     <div className="mt-4 space-y-4 max-h-[250px] overflow-y-auto pr-2">
                       <TabsContent value="active" className="mt-0">
-                          {mockAssignments.filter(a => a.status === 'In Progress' || a.status === 'Open').map(a => <AssignmentCard key={a.id} assignment={a} mode="requester" />)}
+                          {mockAssignments.filter(a => a.requester.id === mockUser.id && (a.status === 'In Progress' || a.status === 'Open')).map(a => <AssignmentCard key={a.id} assignment={a} mode="requester" />)}
                       </TabsContent>
                       <TabsContent value="completed" className="mt-0">
-                          {mockAssignments.filter(a => a.status === 'Completed').map(a => <AssignmentCard key={a.id} assignment={a} mode="requester" />)}
+                          {mockAssignments.filter(a => a.requester.id === mockUser.id && a.status === 'Completed').map(a => <AssignmentCard key={a.id} assignment={a} mode="requester" />)}
                       </TabsContent>
                     </div>
                 </Tabs>
@@ -159,15 +107,15 @@ const ProviderView = () => (
           </CardContent>
         </Card>
       </div>
-    <div className="grid grid-cols-1 gap-6">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
             <CardHeader>
-                <CardTitle>Available Assignments</CardTitle>
-                <CardDescription>Find new opportunities to earn.</CardDescription>
+                <CardTitle>My Current Assignments</CardTitle>
+                <CardDescription>Assignments you are currently working on.</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {mockAssignments.filter(a => a.status === 'Open').map(a => (
+                <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
+                    {mockAssignments.filter(a => a.provider?.id === mockUser.id && a.status === 'In Progress').map(a => (
                         <AssignmentCard key={a.id} assignment={a} mode="provider" />
                     ))}
                 </div>

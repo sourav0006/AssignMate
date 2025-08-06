@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ModeToggle } from "@/components/dashboard/ModeToggle";
-import { LayoutDashboard, LogOut, PlusCircle, Settings, User as UserIcon } from "lucide-react";
+import { LayoutDashboard, LogOut, PlusCircle, Search, Settings, User as UserIcon } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 
 type HeaderProps = {
@@ -42,17 +42,17 @@ function Logo() {
 export function Header({ mode, setMode }: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 md:px-6">
-      <nav className="flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+      <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <Logo />
-          <span className="font-bold">AssignSimple</span>
+          <span className="sr-only">AssignSimple</span>
         </Link>
         <Link
           href="/dashboard"
-          className="text-foreground transition-colors hover:text-foreground hidden md:block"
+          className="text-foreground transition-colors hover:text-foreground"
         >
           Dashboard
         </Link>
@@ -61,6 +61,14 @@ export function Header({ mode, setMode }: HeaderProps) {
         <div className="ml-auto flex-1 sm:flex-initial">
           <ModeToggle mode={mode} setMode={setMode} />
         </div>
+         {mode === 'provider' && (
+          <Button asChild variant="outline" className="gap-2">
+            <Link href="/find-work">
+                <Search className="h-4 w-4" />
+                <span className="hidden sm:inline">Find Work</span>
+            </Link>
+          </Button>
+        )}
         <Button asChild className="gap-2">
           <Link href="/create-assignment">
             <PlusCircle className="h-4 w-4" />
@@ -89,9 +97,11 @@ export function Header({ mode, setMode }: HeaderProps) {
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Logout</span>
+             <DropdownMenuItem asChild>
+                <Link href="/login">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Logout</span>
+                </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

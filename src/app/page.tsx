@@ -56,10 +56,10 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button size="lg" asChild>
-                    <Link href="/dashboard">Post an Assignment</Link>
+                    <Link href="/create-assignment">Post an Assignment</Link>
                   </Button>
                   <Button size="lg" variant="secondary" asChild>
-                    <Link href="/dashboard">Find Work</Link>
+                    <Link href="/find-work">Find Work</Link>
                   </Button>
                 </div>
               </div>
