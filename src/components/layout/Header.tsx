@@ -15,6 +15,8 @@ import {
 import { ModeToggle } from "@/components/dashboard/ModeToggle";
 import { LogOut, PlusCircle, Search, Settings, User as UserIcon } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
+import { useAuth } from "@/components/common/AuthProvider";
+import { useRouter } from "next/navigation";
 
 type HeaderProps = {
   mode: "requester" | "provider";
@@ -41,6 +43,14 @@ function Logo() {
 }
 
 export function Header({ mode, setMode }: HeaderProps) {
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -62,14 +72,12 @@ export function Header({ mode, setMode }: HeaderProps) {
         <div className="ml-auto flex-1 sm:flex-initial">
           <ModeToggle mode={mode} setMode={setMode} />
         </div>
-         {mode === 'provider' && (
-          <Button asChild variant="outline" className="gap-2">
-            <Link href="/find-work">
-                <Search className="h-4 w-4" />
-                <span className="hidden sm:inline">Find Work</span>
-            </Link>
-          </Button>
-        )}
+        <Button asChild variant="outline" className="gap-2">
+          <Link href="/find-work">
+              <Search className="h-4 w-4" />
+              <span className="hidden sm:inline">Find Work</span>
+          </Link>
+        </Button>
         <Button asChild className="gap-2">
           <Link href="/create-assignment">
             <PlusCircle className="h-4 w-4" />
@@ -102,11 +110,9 @@ export function Header({ mode, setMode }: HeaderProps) {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-             <DropdownMenuItem asChild>
-                <Link href="/login">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Logout</span>
-                </Link>
+             <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Logout</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

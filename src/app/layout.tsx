@@ -3,6 +3,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import ErrorBoundary from "@/components/common/ErrorBoundary";
+import { AuthProvider } from "@/components/common/AuthProvider";
 
 export const metadata: Metadata = {
   title: 'AssignMate',
@@ -23,7 +24,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased min-h-screen">
         <ErrorBoundary>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </ErrorBoundary>
         <Toaster />
       </body>

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Assignment, User } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChatBox } from "@/components/chat/ChatBox";
+import { mockAssignments } from "@/lib/mock-data";
 
 const mockUser: User = {
   id: "user-1",
@@ -133,4 +134,8 @@ export default function AssignmentDetailPage({ params }: { params: { id: string 
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  return mockAssignments.map((a) => ({ id: a.id }));
 }
