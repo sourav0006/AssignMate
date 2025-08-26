@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,6 +21,7 @@ import { CalendarIcon, MapPin, Paperclip } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { FilePreviewList } from "@/components/common/FilePreview";
 
 const formSchema = z.object({
   title: z.string().min(10, {
@@ -41,6 +42,7 @@ const formSchema = z.object({
 
 export function CreateAssignmentForm() {
   const { toast } = useToast();
+  const [selectedFiles, setSelectedFiles] = React.useState<File[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -187,10 +189,19 @@ export function CreateAssignmentForm() {
                     <label htmlFor="file-upload" className="flex items-center justify-center gap-2">
                         <Paperclip className="h-4 w-4" />
                         <span>Upload PDF or Images</span>
-                        <Input id="file-upload" type="file" className="sr-only" {...field} />
+                        <Input id="file-upload" type="file" className="sr-only" multiple onChange={(e) => {
+                          const files = Array.from(e.target.files || []);
+                          setSelectedFiles(files);
+                          field.onChange(files);
+                        }} />
                     </label>
                 </Button>
               </FormControl>
+              <FilePreviewList files={selectedFiles} onRemove={(i) => {
+                setSelectedFiles(prev => prev.filter((_, idx) => idx !== i));
+                const next = selectedFiles.filter((_, idx) => idx !== i);
+                form.setValue("files", next);
+              }} />
               <FormMessage />
             </FormItem>
           )}

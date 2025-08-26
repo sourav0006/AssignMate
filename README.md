@@ -28,6 +28,7 @@
 - Title, description, deadline picker
 - Attachments (PDF/images)
 - INR payment input
+ - Skeleton loaders and graceful error boundaries
 
 ### 📩 Application & Assignment Flow
 - Providers can apply to posted tasks
@@ -37,6 +38,7 @@
 ### 💬 Real-Time Chat
 - Bargaining, negotiation, and communication
 - File and media sharing supported
+ - Image/PDF previews before sending
 
 ### 📊 Dashboard with Insights
 - Total assignments posted/done
@@ -66,6 +68,7 @@
 |------|-------|
 | **React.js** | Frontend SPA framework |
 | **Tailwind CSS** | Utility-first responsive UI styling |
+| **Jest + React Testing Library** | Unit and integration tests |
 | **Framer Motion** | UI animations and transitions |
 | **Firebase** | Full backend – Auth, Firestore, Functions, Hosting |
 | **Firebase Storage** | File uploads (images, PDFs) |

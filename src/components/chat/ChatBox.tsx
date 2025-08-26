@@ -7,7 +7,9 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Paperclip, Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ChatSkeleton } from "@/components/common/Skeletons";
+import { FilePreviewList } from "@/components/common/FilePreview";
 
 const mockCurrentUser: User = {
   id: "user-1",
@@ -37,6 +39,13 @@ const initialMessages: Message[] = [
 export function ChatBox() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [attachments, setAttachments] = useState<File[]>([]);
+
+  useEffect(() => {
+    const t = setTimeout(() => setIsLoading(false), 700);
+    return () => clearTimeout(t);
+  }, []);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +60,15 @@ export function ChatBox() {
     setNewMessage("");
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    setAttachments(Array.from(e.target.files));
+  };
+
+  const removeAttachment = (index: number) => {
+    setAttachments(prev => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="flex flex-col h-full">
         <div className="flex items-center gap-4 p-4 border-b">
@@ -63,6 +81,9 @@ export function ChatBox() {
                 <p className="text-xs text-muted-foreground">Typing...</p>
             </div>
         </div>
+      {isLoading ? (
+        <ChatSkeleton />
+      ) : (
       <ScrollArea className="flex-grow p-4">
         <div className="space-y-4">
           {messages.map((message) => (
@@ -99,8 +120,16 @@ export function ChatBox() {
               </div>
             </div>
           ))}
+          {attachments.length > 0 && (
+            <div className="flex justify-end">
+              <div className="max-w-xs md:max-w-md">
+                <FilePreviewList files={attachments} onRemove={removeAttachment} />
+              </div>
+            </div>
+          )}
         </div>
       </ScrollArea>
+      )}
       <div className="p-4 border-t">
         <form onSubmit={handleSendMessage} className="relative">
           <Input 
@@ -110,9 +139,12 @@ export function ChatBox() {
             onChange={(e) => setNewMessage(e.target.value)}
           />
           <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
-            <Button type="button" variant="ghost" size="icon">
-              <Paperclip className="h-4 w-4" />
-            </Button>
+            <label htmlFor="chat-attachment" className="cursor-pointer">
+              <input id="chat-attachment" type="file" className="sr-only" multiple onChange={handleFileChange} />
+              <Button type="button" variant="ghost" size="icon">
+                <Paperclip className="h-4 w-4" />
+              </Button>
+            </label>
             <Button type="submit" variant="ghost" size="icon">
               <Send className="h-4 w-4" />
             </Button>

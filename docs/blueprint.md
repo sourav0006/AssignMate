@@ -1,3 +1,22 @@
+# Backend Blueprint
+## Firebase Functions API (draft)
+
+- POST `/payments/create-order`
+  - body: `{ amount: number }`
+  - returns: `{ id: string, amount: number, currency: 'INR' }`
+
+- POST `/assignments`
+  - body: `{ title, description, amount, deadline, location, files }`
+  - returns: `{ id }`
+
+- GET `/assignments/{id}`
+  - returns: assignment document
+
+- POST `/messages`
+  - body: `{ threadId, text?, fileUrl? }`
+  - returns: `{ id }`
+
+Note: Secure via Firebase Auth; validate input with Zod server-side.
 # **App Name**: AssignSimple
 
 ## Core Features:

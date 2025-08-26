@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Assignment, User } from "@/types";
 import { Header } from "@/components/layout/Header";
 import { AssignmentCard } from "@/components/assignment/AssignmentCard";
@@ -9,9 +9,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { IndianRupee, CheckCircle, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockAssignments, mockUser } from "@/lib/mock-data";
+import { AssignmentListSkeleton, DashboardSkeleton } from "@/components/common/Skeletons";
 
 
-const RequesterView = () => (
+const RequesterView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="space-y-6">
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
@@ -46,7 +47,11 @@ const RequesterView = () => (
         </Card>
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
-        <StatsChart title="Monthly Spending" yAxisLabel="Amount Spent (₹)" />
+        {isLoading ? (
+          <div className="animate-pulse rounded-lg border bg-card p-4 h-72" />
+        ) : (
+          <StatsChart title="Monthly Spending" yAxisLabel="Amount Spent (₹)" />
+        )}
         <Card className="lg:col-span-1">
             <CardHeader>
                 <CardTitle>My Posted Assignments</CardTitle>
@@ -60,10 +65,24 @@ const RequesterView = () => (
                     </TabsList>
                     <div className="mt-4 space-y-4 max-h-[250px] overflow-y-auto pr-2">
                       <TabsContent value="active" className="mt-0">
-                          {mockAssignments.filter(a => a.requester.id === mockUser.id && (a.status === 'In Progress' || a.status === 'Open')).map(a => <AssignmentCard key={a.id} assignment={a} mode="requester" />)}
+                        {isLoading ? (
+                          <AssignmentListSkeleton />
+                        ) : (
+                          mockAssignments
+                            .filter(
+                              a => a.requester.id === mockUser.id && (a.status === 'In Progress' || a.status === 'Open')
+                            )
+                            .map(a => <AssignmentCard key={a.id} assignment={a} mode="requester" />)
+                        )}
                       </TabsContent>
                       <TabsContent value="completed" className="mt-0">
-                          {mockAssignments.filter(a => a.requester.id === mockUser.id && a.status === 'Completed').map(a => <AssignmentCard key={a.id} assignment={a} mode="requester" />)}
+                        {isLoading ? (
+                          <AssignmentListSkeleton />
+                        ) : (
+                          mockAssignments
+                            .filter(a => a.requester.id === mockUser.id && a.status === 'Completed')
+                            .map(a => <AssignmentCard key={a.id} assignment={a} mode="requester" />)
+                        )}
                       </TabsContent>
                     </div>
                 </Tabs>
@@ -73,7 +92,7 @@ const RequesterView = () => (
   </div>
 );
 
-const ProviderView = () => (
+const ProviderView = ({ isLoading }: { isLoading: boolean }) => (
     <div className="space-y-6">
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
@@ -115,13 +134,21 @@ const ProviderView = () => (
             </CardHeader>
             <CardContent>
                 <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-2">
-                    {mockAssignments.filter(a => a.provider?.id === mockUser.id && a.status === 'In Progress').map(a => (
-                        <AssignmentCard key={a.id} assignment={a} mode="provider" />
-                    ))}
+                  {isLoading ? (
+                    <AssignmentListSkeleton />
+                  ) : (
+                    mockAssignments
+                      .filter(a => a.provider?.id === mockUser.id && a.status === 'In Progress')
+                      .map(a => <AssignmentCard key={a.id} assignment={a} mode="provider" />)
+                  )}
                 </div>
             </CardContent>
         </Card>
-        <StatsChart title="Monthly Earnings" yAxisLabel="Amount Earned (₹)" />
+        {isLoading ? (
+          <div className="animate-pulse rounded-lg border bg-card p-4 h-72" />
+        ) : (
+          <StatsChart title="Monthly Earnings" yAxisLabel="Amount Earned (₹)" />
+        )}
     </div>
     </div>
 );
@@ -129,6 +156,12 @@ const ProviderView = () => (
 
 export function DashboardClient() {
   const [mode, setMode] = useState<"requester" | "provider">("requester");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setIsLoading(false), 900);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <>
@@ -142,7 +175,13 @@ export function DashboardClient() {
             You are in <span className="font-semibold text-primary">{mode}</span> mode. Here is an overview of your activity.
           </p>
         </div>
-        {mode === 'requester' ? <RequesterView /> : <ProviderView />}
+        {isLoading ? (
+          <DashboardSkeleton />
+        ) : mode === 'requester' ? (
+          <RequesterView isLoading={isLoading} />
+        ) : (
+          <ProviderView isLoading={isLoading} />
+        )}
       </main>
     </>
   );
